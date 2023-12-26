@@ -19,7 +19,7 @@ def blast_sequence(sequence):
     return blast_records
 
 def fetch_and_align_sequences(hsa_sequence, blast_records, max_sequences, threshold):
-    sequences = [hsa_sequence]  # Start with the human sequence
+    sequences = [hsa_sequence] 
     for blast_record in blast_records:
         for alignment in blast_record.alignments[:max_sequences]:
             for hsp in alignment.hsps:
@@ -33,8 +33,8 @@ def fetch_and_align_sequences(hsa_sequence, blast_records, max_sequences, thresh
     sequences = [record for record in sequences if len(record.seq) >= int(len(hsa_sequence.seq) * threshold)]
     SeqIO.write(sequences, "mammalian_sequences.fasta", "fasta")
     
-    input_file = "C:\\Users\\planktonelis\\Desktop\\3 kursas\\Bioinformatika\\3lab\\mammalian_sequences.fasta"
-    output_file = "C:\\Users\\planktonelis\\Desktop\\3 kursas\\Bioinformatika\\3lab\\aligned_sequences.fasta"
+    input_file = "C:\\Users\\planktonelis\\Desktop\\3 kursas\\Bioinformatika\\3lab\\Albumin_antibody_design\\mammalian_sequences.fasta"
+    output_file = "C:\\Users\\planktonelis\\Desktop\\3 kursas\\Bioinformatika\\3lab\\Albumin_antibody_design\\aligned_sequences.fasta"
 
     executable = "C:\\Program Files\\mafft-win\\mafft.bat"
 
@@ -45,13 +45,7 @@ def fetch_and_align_sequences(hsa_sequence, blast_records, max_sequences, thresh
     return alignment
 
 def analyze_alignment(alignment, window_size):
-    human_sequence = None
-    for record in alignment:
-        if "ALBU_HUMAN" in record.id.upper():
-            human_sequence = record.seq
-    if human_sequence is None:
-        raise ValueError("Human albumin sequence not found in the alignment.")
-
+    human_sequence = alignment[0].seq
     unique_fragment = None
     unique_fragment_score = float('inf')
     conserved_fragment = None
